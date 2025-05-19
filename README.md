@@ -13,10 +13,6 @@ If you have [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](h
 docker compose up
 ```
 
-This will launch the PostgreSQL database and the application using the configuration in your `docker-compose.yml` file.
-**You must have a PostgreSQL database running and accessible.  
-A database named `taxi_db` is required for this application.**
-
 ### 1. Install PostgreSQL (if not already installed)
 
 On Ubuntu:
