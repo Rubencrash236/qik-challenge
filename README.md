@@ -129,3 +129,10 @@ A RESTful API for managing passengers, drivers, and trips for a taxi service.
 - All endpoints accept and return JSON.
 - The API uses TypeORM and NestJS.
 - Database tables are created and seeded automatically on first run.
+
+---
+
+## Test with Postman
+
+You can test the API using Postman with the following invite link:  
+https://app.getpostman.com/join-team?invite_code=e32d2f402ccd6fe36755908de44d5a7bf85d5f848448a9c6633ba2b92d3c1065&target_code=7a41eed23de7776fe0ac7aebaa83701c
