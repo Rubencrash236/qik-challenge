@@ -1,79 +1,131 @@
-# Taxi24
+# Taxi24 API
 
-A progressive [NestJS](https://nestjs.com/) TypeScript backend for managing taxi trips, drivers, passengers, and billing.
-
----
-
-## Prerequisites
-### Easy Run (with Docker Compose)
-
-If you have [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/) installed, you can start all required services with:
-
-```bash
-docker compose up
-```
-
-### 1. Install PostgreSQL (if not already installed)
-
-On Ubuntu:
-
-```bash
-sudo apt update
-sudo apt install postgresql postgresql-contrib
-```
-
-### 2. Create the `taxi_db` Database
-
-Start PostgreSQL and create the database:
-
-```bash
-sudo service postgresql start
-sudo -u postgres psql
-```
-
-Inside the PostgreSQL prompt, run:
-
-```sql
-CREATE DATABASE taxi_db;
-\q
-```
-
-### 3. Configure Database Connection
-
-Set your database connection settings in a `.env` file or your configuration (example):
-
-```
-DB_HOST=localhost
-DB_PORT=5432
-DB_USERNAME=postgres
-DB_PASSWORD=1234
-DB_DATABASE=taxi_db
-```
-
-Replace `your_password` with your actual PostgreSQL password.
+A RESTful API for managing passengers, drivers, and trips for a taxi service.
 
 ---
 
-## Project Setup
+## Endpoints
 
-Install dependencies:
+### Root
 
-```bash
-npm install
-```
+- `GET /`  
+  Returns: `"Hello World!"`
 
 ---
 
-## Running the Application
+### Passenger
 
-### Development
+- `GET /rest/Passenger`  
+  Get all passengers.
 
-```bash
-npm run start
-```
+- `GET /rest/Passenger/:id`  
+  Get a passenger by ID.
 
-### Watch Mode
+- `GET /rest/Passenger/available/nearby`  
+  **Body:** `{ "latitude": number, "longitude": number }`  
+  Get the 3 closest available drivers to a location.
 
-```bash
-npm run start:dev
-```
+---
+
+### Driver
+
+- `GET /rest/Driver`  
+  Get all drivers.
+
+- `GET /rest/Driver/available`  
+  Get all available drivers.
+
+- `GET /rest/Driver/available/nearby`  
+  **Body:** `{ "latitude": number, "longitude": number }`  
+  Get all available drivers within 3km of a location.
+
+- `GET /rest/Driver/:id`  
+  Get a driver by ID.
+
+---
+
+### Trip
+
+- `GET /rest/Trip`  
+  Get all trips.
+
+- `GET /rest/Trip/active`  
+  Get all active trips.
+
+- `GET /rest/Trip/:id`  
+  Get a trip by ID.
+
+- `POST /rest/Trip/create`  
+  **Body:** `{ "passengerId": number, "destinationLatitude": number, "destinationLongitude": number }`  
+  Create a new trip request (assigns a nearby driver).
+
+- `POST /rest/Trip/complete`  
+  **Body:** `{ "id": number }`  
+  Complete a trip (generates a bill).
+
+---
+
+## Quick Start with Docker Compose
+
+1. Make sure you have [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/) installed.
+2. Run the following command in the project root:
+
+   ```sh
+   docker compose up
+   ```
+
+3. The API will be available at [http://localhost:3000](http://localhost:3000).
+
+---
+
+## Manual Setup (Local Development)
+
+1. **Install dependencies:**
+
+   ```sh
+   npm install
+   ```
+
+2. **Start PostgreSQL:**
+
+   - You need a PostgreSQL instance running with:
+     - user: `postgres`
+     - password: `1234`
+     - database: `taxi_db`
+   - You can use Docker:
+
+     ```sh
+     docker run --name taxi24-db -e POSTGRES_PASSWORD=1234 -e POSTGRES_USER=postgres -e POSTGRES_DB=taxi_db -p 5432:5432 -d postgres
+     ```
+
+3. **Configure environment (if needed):**
+
+   - The database connection is set in [`src/app.module.ts`](src/app.module.ts) to connect to `challenge-qik-db:5432` by default (for Docker).  
+   - For local development, you may want to change `host` to `localhost` or set up your `/etc/hosts` accordingly.
+
+4. **Run the application:**
+
+   ```sh
+   npm run start:dev
+   ```
+
+5. **Seed Data:**
+
+   - The application seeds the database automatically on startup using [`SeederService`](src/seeder.service.ts).
+
+---
+
+## Project Structure
+
+- `src/Passenger` - Passenger module, controller, service, entity
+- `src/Driver` - Driver module, controller, service, entity
+- `src/Trip` - Trip module, controller, service, entity, bill
+- `src/seeder.service.ts` - Seeds the database with initial data
+
+---
+
+## Notes
+
+- All endpoints accept and return JSON.
+- The API uses TypeORM and NestJS.
+- Database tables are created and seeded automatically on first run.
