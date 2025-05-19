@@ -5,7 +5,15 @@ A progressive [NestJS](https://nestjs.com/) TypeScript backend for managing taxi
 ---
 
 ## Prerequisites
+### Easy Run (with Docker Compose)
 
+If you have [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/) installed, you can start all required services with:
+
+```bash
+docker compose up
+```
+
+This will launch the PostgreSQL database and the application using the configuration in your `docker-compose.yml` file.
 **You must have a PostgreSQL database running and accessible.  
 A database named `taxi_db` is required for this application.**
 
