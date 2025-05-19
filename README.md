@@ -77,24 +77,3 @@ npm run start
 ```bash
 npm run start:dev
 ```
-
-### Production
-
-```bash
-npm run start:prod
-```
-
----
-
-## Running Tests
-
-```bash
-# unit tests
-npm run test
-
-# e2e tests
-npm run test:e2e
-
-# test coverage
-npm run test:cov
-```
