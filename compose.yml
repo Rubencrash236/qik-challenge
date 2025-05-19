@@ -1,0 +1,33 @@
+networks:
+  challenge:
+    external: false
+
+services:
+  challenge-qik:
+    container_name: challenge-qik
+    image: 'dreamy236/taxi24-app:latest'
+    stdin_open: true
+    tty: true
+    ports:
+      - "3000:3000"
+      - "8080:8080"
+      - "5173:5173"
+      - "4200:4200"
+    volumes:
+      - './challenge:/home/challenge'
+    networks:
+      - challenge
+    depends_on:
+      - postgres
+  
+  postgres:
+    container_name: challenge-qik-db
+    image: postgres
+    volumes:
+      - './postgres:/var/lib/postgresql/data'
+    environment:
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=taxi_db
+    networks:
+      - challenge
